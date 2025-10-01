@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MVCS3.BLL.Services;
 using MVCS3.DAL.Data.Contexts;
+using MVCS3.DAL.Repositories;
 
 namespace MVCS3PL
 {
@@ -19,9 +21,11 @@ namespace MVCS3PL
                 //var conString = builder.Configuration["ConnectionStrings: DefaultConnection"];
                 //var conString = builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"];
                 var conString = builder.Configuration.GetConnectionString("DefaultConnection");
-                options.UseSqlServer("ConnectionString");
+                options.UseSqlServer(conString);
             });
-     
+
+            builder.Services.AddScoped<IDeprtmentRepository, DeprtmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             #endregion
 
             var app = builder.Build();
