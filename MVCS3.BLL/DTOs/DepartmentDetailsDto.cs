@@ -9,15 +9,17 @@ namespace MVCS3.BLL.DTOs
 {
     public class DepartmentDetailsDto
     {
+        
         //public DepartmentDetailsDto(Department dept)
-        //{//Set Values Of Current Object this-> From Department
-        //    Id= dept.Id;
-        //    Code= dept.Code;
-        //    Name =dept.Name;
-        //    CreatedBy =dept.CreatedBy;
-        //    LastModifiedBy =dept.LastModifiedBy;
-        //    IsDeleted= dept.IsDeleted;
-        //    DateOfCreation= DateOnly.FromDateTime(dept.CreatedOn);
+        //{
+        //    Id = dept.Id;
+        //    Code = dept.Code;
+        //    Name = dept.Name;
+        //    Description = dept.Description;
+        //    CreatedBy = dept.CreatedBy;
+        //    LastModifiedBy = dept.LastModifiedBy;
+        //    IsDeleted = dept.IsDeleted;
+        //    DateOfCreation = DateOnly.FromDateTime(dept.CreatedOn);
         //    LastModifiedOn = DateOnly.FromDateTime(dept.LastModifiedon);
         //}
         public int Id { get; set; }

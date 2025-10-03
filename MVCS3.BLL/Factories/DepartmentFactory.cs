@@ -30,6 +30,7 @@ namespace MVCS3.BLL.Factories
                 Id = department.Id,
                 Code = department.Code,
                 Name = department.Name,
+                Description = department.Description,
                 CreatedBy = department.CreatedBy,
                 LastModifiedBy = department.LastModifiedBy,
                 IsDeleted = department.IsDeleted,
