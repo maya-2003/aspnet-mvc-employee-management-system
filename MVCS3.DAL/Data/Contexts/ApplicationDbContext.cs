@@ -22,10 +22,12 @@ namespace MVCS3.DAL.Data.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration<Department>(new DepartmentConfiguration());
+            modelBuilder.ApplyConfiguration<Employee>(new EmployeeConfiguration());
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         }
         public DbSet<Employee> Employees { get; set; }
+
     }
 }

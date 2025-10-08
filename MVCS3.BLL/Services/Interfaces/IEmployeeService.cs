@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MVCS3.BLL.Services.Interfaces
 {
-    internal interface IEmployeeService
+    public interface IEmployeeService
     {
 
         IEnumerable<EmployeeDto> GetAllEmployees();

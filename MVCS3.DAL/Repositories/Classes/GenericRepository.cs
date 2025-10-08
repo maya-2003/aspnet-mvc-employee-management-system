@@ -22,8 +22,8 @@ namespace MVCS3.DAL.Repositories.Classes
         //Get All TEntity
         public IEnumerable<TEntity> GetAll(bool withTracking = false)
         {
-            if (withTracking) return _dbContext.Set<TEntity>().ToList();
-            else return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+            if (withTracking) return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted== false).ToList();
+            else return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).AsNoTracking().ToList();
         }
         //Add TEntity
         public int Add(TEntity entity)
