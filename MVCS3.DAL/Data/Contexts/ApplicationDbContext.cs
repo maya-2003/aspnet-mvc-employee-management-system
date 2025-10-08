@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MVCS3.DAL.Data.Configurations;
+using MVCS3.DAL.Models.DepartmentModel;
+using MVCS3.DAL.Models.EmployeeModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +26,6 @@ namespace MVCS3.DAL.Data.Contexts
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

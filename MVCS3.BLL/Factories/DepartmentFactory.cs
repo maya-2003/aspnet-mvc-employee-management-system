@@ -1,5 +1,5 @@
-﻿using MVCS3.BLL.DTOs;
-using MVCS3.DAL.Models;
+﻿using MVCS3.BLL.DTOs.DepartmentDtos;
+using MVCS3.DAL.Models.DepartmentModel;
 using MVCS3.DAL.Repositories;
 using System;
 using System.Collections.Generic;

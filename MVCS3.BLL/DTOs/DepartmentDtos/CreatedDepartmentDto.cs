@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVCS3.BLL.DTOs
+namespace MVCS3.BLL.DTOs.DepartmentDtos
 {
     public class CreatedDepartmentDto
     {
         [MaxLength(10)]
-        public string Name {get; set; }
+        public string Name { get; set; }
         public string Code { get; set; }
-        [Display (Name = "Creation Date")]
+        [Display(Name = "Creation Date")]
         public DateOnly DateOfCreation { get; set; }
         public string? Description { get; set; }
     }
 
 }
-    
+

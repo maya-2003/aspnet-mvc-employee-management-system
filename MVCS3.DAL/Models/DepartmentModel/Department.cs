@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MVCS3.DAL.Models.Shared;
 
-namespace MVCS3.DAL.Models
+namespace MVCS3.DAL.Models.DepartmentModel
 {
     public class Department : BaseEntity
     {

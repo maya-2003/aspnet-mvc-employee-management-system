@@ -1,8 +1,12 @@
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MVCS3.BLL.Services;
+using MVCS3.BLL.MappingProfiles;
+using MVCS3.BLL.Services.Classes;
+using MVCS3.BLL.Services.Interfaces;
 using MVCS3.DAL.Data.Contexts;
-using MVCS3.DAL.Repositories;
+using MVCS3.DAL.Repositories.Classes;
+using MVCS3.DAL.Repositories.Interfaces;
 
 namespace MVCS3PL
 {
@@ -26,6 +30,10 @@ namespace MVCS3PL
 
             builder.Services.AddScoped<IDeprtmentRepository, DeprtmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            //builder.Services.AddAutoMapper(typeof(ProjectReference).Assembly);
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             #endregion
 
             var app = builder.Build();

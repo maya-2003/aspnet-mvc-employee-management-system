@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MVCS3.BLL.DTOs;
-using MVCS3.BLL.Services;
+using MVCS3.BLL.DTOs.DepartmentDtos;
+using MVCS3.BLL.Services.Interfaces;
 using MVCS3.DAL.Models;
 using MVCS3PL.ViewModels.DepartmentViewModels;
 namespace MVCS3PL.Controllers

@@ -1,6 +1,6 @@
-﻿using MVCS3.BLL.DTOs;
+﻿using MVCS3.BLL.DTOs.DepartmentDtos;
 
-namespace MVCS3.BLL.Services
+namespace MVCS3.BLL.Services.Interfaces
 {
     public interface IDepartmentService
     {

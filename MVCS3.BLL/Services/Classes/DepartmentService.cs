@@ -1,15 +1,16 @@
-﻿using MVCS3.BLL.DTOs;
+﻿using MVCS3.BLL.DTOs.DepartmentDtos;
 using MVCS3.BLL.Factories;
+using MVCS3.BLL.Services.Interfaces;
 using MVCS3.DAL.Data.Contexts;
 using MVCS3.DAL.Models;
-using MVCS3.DAL.Repositories;
+using MVCS3.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVCS3.BLL.Services
+namespace MVCS3.BLL.Services.Classes
 {
     public class DepartmentService(IDeprtmentRepository _departmentRepository) : IDepartmentService
     {
