@@ -18,7 +18,7 @@ namespace MVCS3.BLL.Services.Classes
     {
         public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            var employees = _employeeRepository.GetAll();
+
             //var employeesDto = employees.Select(emp => new EmployeeDto()
             //{
             //    Id = emp.Id,
@@ -30,7 +30,45 @@ namespace MVCS3.BLL.Services.Classes
             //    IsActive = emp.IsActive,
             //    Salary = emp.Salary,
             //});
+
+            //var employees = _employeeRepository.GetAll(e => new EmployeeDto()
+            //{
+            //    Id=e.Id,
+            //    Name=e.Name,
+            //    Salary=e.Salary,
+            //    Age=e.Age,
+
+
+            //}).Where(e=>e.Age > 25);
+            //return employees;
+            var employees = _employeeRepository.GetAll();
             return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
+
+            #region IEnumerable
+            //var result = _employeeRepository.GetIEnumerable()
+            //                                .Where(e => e.IsDeleted == false)
+            //                                .Select(e => new EmployeeDto()
+            //                                {
+            //                                    Id=e.Id,
+            //                                    Name =e.Name, 
+            //                                   Age = e.Age,
+
+            //                                }); 
+            #endregion
+
+            #region IQueryable
+            //var result = _employeeRepository.GetIQueryable()
+            //                                .Where(e => e.IsDeleted == false)
+            //                                .Select(e => new EmployeeDto()
+            //                                {
+            //                                    Id = e.Id,
+            //                                    Name = e.Name,
+            //                                    Age = e.Age,
+
+            //                                }); 
+            #endregion
+            //return result.ToList();
+
 
         }
     

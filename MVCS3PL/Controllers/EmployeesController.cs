@@ -8,6 +8,8 @@ using MVCS3.DAL.Models.EmployeeModel;
 using MVCS3.DAL.Models.Shared.Enums;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Net;
+using MVCS3PL.ViewModels.EmployeeViewModels;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace MVCS3PL.Controllers
 {
@@ -22,18 +24,34 @@ namespace MVCS3PL.Controllers
         #region Create
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(/*[FromServices]IDepartmentService _departmentService*/)
         {
+            //ViewData["Departments"] = _departmentService.GetAllDepartments();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(CreatedEmployeeDto dto)
+        public IActionResult Create(EmployeeViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var dto = new CreatedEmployeeDto()
+                    {
+                        Name = model.Name,
+                        Email = model.Email,
+                        Age = model.Age,
+                        Address = model.Address,
+                        DepartmentId = model.DepartmentId,
+                        EmployeeType = model.EmployeeType,
+                        Gender = model.Gender,
+                        HiringDate = model.HiringDate,
+                        IsActive = model.IsActive,
+                        PhoneNumber = model.PhoneNumber,
+                        Salary = model.Salary
+
+                    };
                     int res = _employeeService.AddEmployee(dto);
                     if (res > 0)
                     {
@@ -42,7 +60,7 @@ namespace MVCS3PL.Controllers
                     else
                     {
                         ModelState.AddModelError(string.Empty, "Employee Can't Be Added");
-                        return View(dto);
+                        return View(model);
                     }
 
                 }
@@ -53,20 +71,20 @@ namespace MVCS3PL.Controllers
                     {
                         //1) Development => Log Error In Console And Return The Same View With The Error Message
                         ModelState.AddModelError(string.Empty, ex.Message);
-                        return View(dto);
+                        return View(model);
                     }
                     else
                     {
                         //2) Development => Log Error In File Table And Return The Same View With The Error Message
                         //_logger.LogError(ex.Message);
-                        return View(dto);
+                        return View(model);
                     }
                 }
 
             }
             else
             {
-                return View(dto);
+                return View(model);
             }
 
         }
@@ -91,9 +109,9 @@ namespace MVCS3PL.Controllers
             if (!id.HasValue) return BadRequest(); //480
             var emp = _employeeService.GetById(id.Value);
             if (emp is null) return NotFound();//484
-            var dto = new UpdatedEmployeeDto()
+            var dto = new EmployeeViewModel()
             {
-                Id = emp.Id,
+                //Id = emp.Id,
                 Name = emp.Name,
                 Age = emp.Age,
                 Address = emp.Address,
@@ -103,17 +121,35 @@ namespace MVCS3PL.Controllers
                 HiringDate = emp.HiringDate,
                 IsActive = emp.IsActive,
                 EmployeeType = Enum.Parse<EmployeeType>(emp.EmployeeType),
-                Gender = Enum.Parse<Gender>(emp.Gender)
+                Gender = Enum.Parse<Gender>(emp.Gender),
+                DepartmentId = emp.DepartmentId
 
             };
             return View(dto);
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto dto)
+        public IActionResult Edit([FromRoute] int id, EmployeeViewModel model)
         {
-            if (id != dto.Id) return BadRequest();
-            if (!ModelState.IsValid) return View(dto);
+            //if (id != dto.Id) return BadRequest();
+
+            var dto = new UpdatedEmployeeDto()
+            {
+                Id = id,
+                Name = model.Name,
+                Email = model.Email,
+                Age = model.Age,
+                Address = model.Address,
+                DepartmentId = model.DepartmentId,
+                EmployeeType = model.EmployeeType,
+                Gender = model.Gender,
+                HiringDate = model.HiringDate,
+                IsActive = model.IsActive,
+                PhoneNumber = model.PhoneNumber,
+                Salary = model.Salary
+
+            };
+            if (!ModelState.IsValid) return View(model);
             try
             {
                 var res = _employeeService.UpdateEmployee(dto);
@@ -128,13 +164,13 @@ namespace MVCS3PL.Controllers
                 {
                     //1) Development => Log Error In Console And Return The Same View With The Error Message
                     ModelState.AddModelError(string.Empty, ex.Message);
-                    return View(dto);
+                    return View(model);
                 }
                 else
                 {
                     //2) Development => Log Error In File Table And Return The Same View With The Error Message
                     //_logger.LogError(ex.Message);
-                    return View(dto);
+                    return View(model);
                 }
 
             }

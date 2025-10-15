@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MVCS3.DAL.Models.EmployeeModel;
 using MVCS3.DAL.Models.Shared;
 
 namespace MVCS3.DAL.Models.DepartmentModel
@@ -12,5 +13,7 @@ namespace MVCS3.DAL.Models.DepartmentModel
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;
         public string? Description { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }

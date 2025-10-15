@@ -1,4 +1,5 @@
-﻿using MVCS3.DAL.Models.Shared;
+﻿using MVCS3.DAL.Models.DepartmentModel;
+using MVCS3.DAL.Models.Shared;
 using MVCS3.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,7 @@ namespace MVCS3.DAL.Models.EmployeeModel
             public DateTime HiringDate { get; set; }
             public Gender Gender { get; set; }
              public EmployeeType EmployeeType { get; set; }
+            public int? DepartmentId { get; set; }
+            public virtual Department? Department { get; set; }
 }
 }

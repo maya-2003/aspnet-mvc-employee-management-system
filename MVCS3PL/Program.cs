@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -18,14 +19,17 @@ namespace MVCS3PL
 
             // Add services to the container.
             #region Configure Services Add services to the DI container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             //builder.Services.AddScoped<ApplicationDbContext>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 //var conString = builder.Configuration["ConnectionStrings: DefaultConnection"];
                 //var conString = builder.Configuration.GetSection("ConnectionStrings")["DefaultConnection"];
                 var conString = builder.Configuration.GetConnectionString("DefaultConnection");
-                options.UseSqlServer(conString);
+                options.UseSqlServer(conString).UseLazyLoadingProxies();
             });
 
             builder.Services.AddScoped<IDeprtmentRepository, DeprtmentRepository>();

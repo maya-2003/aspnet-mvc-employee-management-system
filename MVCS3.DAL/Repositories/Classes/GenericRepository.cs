@@ -22,9 +22,23 @@ namespace MVCS3.DAL.Repositories.Classes
         //Get All TEntity
         public IEnumerable<TEntity> GetAll(bool withTracking = false)
         {
-            if (withTracking) return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted== false).ToList();
-            else return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).AsNoTracking().ToList();
+            if (withTracking) return _dbContext.Set<TEntity>().ToList();
+            else return _dbContext.Set<TEntity>().AsNoTracking().ToList();
         }
+
+        public IEnumerable<TResult> GetAll<TResult>(System.Linq.Expressions.Expression<Func<TEntity, TResult>> selector)
+        {
+            
+                return _dbContext.Set<TEntity>()
+                .Where(entity => entity.IsDeleted == false)
+                .Select(selector).ToList();
+        }
+
+        //public IEnumerable<TEntity> GetAll(bool withTracking = false)
+        //{
+        //    if (withTracking) return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).ToList();
+        //    else return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).AsNoTracking().ToList();
+        //}
         //Add TEntity
         public int Add(TEntity entity)
         {
@@ -44,5 +58,17 @@ namespace MVCS3.DAL.Repositories.Classes
             _dbContext.Set<TEntity>().Remove(entity);
             return _dbContext.SaveChanges();
         }
+
+        //public IEnumerable<TEntity> GetIEnumerable()
+        //{
+        //    return _dbContext.Set<TEntity>();
+        //}
+
+        //public IQueryable<TEntity> GetIQueryable()
+        //{
+        //    return _dbContext.Set<TEntity>();
+        //}
+
+        
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MVCS3PL.ViewModels.DepartmentViewModels
 {
-    public class DepartmentEditViewModel
+    public class DepartmentViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

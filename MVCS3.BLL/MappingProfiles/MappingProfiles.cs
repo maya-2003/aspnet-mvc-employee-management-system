@@ -18,11 +18,13 @@ namespace MVCS3.BLL.MappingProfiles
             CreateMap<Employee, EmployeeDto>()
                         .ForMember(dest => dest.Gender, Options => Options.MapFrom(src => src.Gender))
                         .ForMember(dest => dest.EmployeeType, Options => Options.MapFrom(src => src.EmployeeType))
+                        .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department != null ? src.Department.Name : null))
                         .ReverseMap();//From Employee To Employee Dto
             CreateMap<Employee, EmployeeDetailsDto>()
                 .ForMember(dest => dest.Gender, options => options.MapFrom(src => src.Gender))
                 .ForMember(dest => dest.EmployeeType, options => options.MapFrom(src => src.EmployeeType))
                 .ForMember(dest => dest.HiringDate, options => options.MapFrom(src => DateOnly.FromDateTime(src.HiringDate)))
+                .ForMember(dest => dest.Department, Options => Options.MapFrom(src => src.Department != null ? src.Department.Name : null))
                 .ReverseMap();
 
 

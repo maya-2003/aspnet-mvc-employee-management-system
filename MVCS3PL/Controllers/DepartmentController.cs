@@ -13,6 +13,12 @@ namespace MVCS3PL.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //ViewData["Msg01"] = "Hello from view data";
+            //ViewBag.Msg02 = "Hello from view bag";
+
+            ViewData["Department91"] = new DepartmentDto() { Name = "TestViewData" };
+            ViewBag.Department02 = new DepartmentDto() { Name = "TestViewBag" };
+
             var deparatments = _departmentService.GetAllDepartments();
             return View(deparatments);
         }
@@ -26,22 +32,38 @@ namespace MVCS3PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreatedDepartmentDto departmentDto)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(DepartmentViewModel departmentModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var departmentDto = new CreatedDepartmentDto()
+                    {
+                        Code = departmentModel.Code,
+                        Name = departmentModel.Name,
+                        Description = departmentModel.Description,
+                        DateOfCreation= departmentModel.DateOfCreation
+                    };
                     int res = _departmentService.AddDepartment(departmentDto);
-                    if (res > 0)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Department Can't Be Added");
-                        return View(departmentDto);
-                    }
+                    string msg;
+
+                    //if (res > 0)
+                    //{
+                    //    return RedirectToAction(nameof(Index));
+                    //}
+                    //else
+                    //{
+                    //    ModelState.AddModelError(string.Empty, "Department Can't Be Added");
+                    //    return View(departmentModel);
+                    //}
+
+                    if (res > 0) msg = $"Department {departmentModel.Name} Is Created Successfully";
+                    else msg = $"Department {departmentModel.Name} Is Not Created";
+
+                    TempData["Message"] = msg;
+                    return RedirectToAction(nameof(Index));
 
                 }
                 catch (Exception ex)
@@ -51,13 +73,13 @@ namespace MVCS3PL.Controllers
                     {
                         //1) Development => Log Error In Console And Return The Same View With The Error Message
                         ModelState.AddModelError(string.Empty, ex.Message);
-                        return View(departmentDto);
+                        return View(departmentModel);
                     }
                     else
                     {
                         //2) Development => Log Error In File Table And Return The Same View With The Error Message
                         //_logger.LogError(ex.Message);
-                        return View(departmentDto);
+                        return View(departmentModel);
                     }
 
 
@@ -66,7 +88,7 @@ namespace MVCS3PL.Controllers
             }
             else
             {
-                return View(departmentDto);
+                return View(departmentModel);
             }
 
         }
@@ -92,7 +114,7 @@ namespace MVCS3PL.Controllers
             if (!id.HasValue) return BadRequest();
             var department = _departmentService.GetById(id.Value);
             if (department is null) return NotFound();
-            var deptViewModel = new DepartmentEditViewModel()
+            var deptViewModel = new DepartmentViewModel()
             {
                 //Id = id.Value,
                 Name = department.Name,
@@ -106,7 +128,7 @@ namespace MVCS3PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel viewModel)
+        public IActionResult Edit([FromRoute] int id, DepartmentViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
             try

@@ -1,18 +1,12 @@
 ﻿using MVCS3.DAL.Models.EmployeeModel;
 using MVCS3.DAL.Models.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MVCS3.BLL.DTOs.EmployeeDtos
+namespace MVCS3PL.ViewModels.EmployeeViewModels
 {
-    public class UpdatedEmployeeDto
+    public class EmployeeViewModel
     {
-        public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name Can't Be Empty")]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
         [MinLength(5, ErrorMessage = "Min length should be 5 characters")]
         public string Name { get; set; } = null!;
@@ -35,6 +29,7 @@ namespace MVCS3.BLL.DTOs.EmployeeDtos
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
 
+        [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
     }
 }
