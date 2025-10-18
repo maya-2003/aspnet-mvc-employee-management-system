@@ -12,13 +12,18 @@ using System.Threading.Tasks;
 
 namespace MVCS3.BLL.Services.Classes
 {
-    public class DepartmentService(IDeprtmentRepository _departmentRepository) : IDepartmentService
+    public class DepartmentService : IDepartmentService
     {
+        private readonly IUnitOfWork _unitOfWork;
 
+        public DepartmentService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         //Get All Departments
         public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var depts = _departmentRepository.GetAll();
+            var depts = _unitOfWork.DepartmentRepository.GetAll();
             var departmentsToReturn = depts.Select(d => d.ToDepartmentDto());
 
 
@@ -31,7 +36,7 @@ namespace MVCS3.BLL.Services.Classes
         //}
         public DepartmentDetailsDto? GetById(int id)
         {
-            var dept = _departmentRepository.GetById(id);
+            var dept = _unitOfWork.DepartmentRepository.GetById(id);
             //if (dept is null) return null;
             //else
             //{
@@ -68,22 +73,24 @@ namespace MVCS3.BLL.Services.Classes
 
         public int AddDepartment(CreatedDepartmentDto departmentDto)
         {
-            var entity = departmentDto.ToEntity();
-            return _departmentRepository.Add(entity);
+           
+            _unitOfWork.DepartmentRepository.Add(departmentDto.ToEntity());
+           return _unitOfWork.SaveChanges();  
         }
 
         public int UpdateDepartment(UpdateDepartmentDto departmentDto)
         {
-            return _departmentRepository.Update(departmentDto.ToEntity());
+            _unitOfWork.DepartmentRepository.Update(departmentDto.ToEntity());
+            return _unitOfWork.SaveChanges();
         }
         public bool DeleteDepartment(int id)
         {
-            var department = _departmentRepository.GetById(id);
+            var department = _unitOfWork.DepartmentRepository.GetById(id);
             if (department is null) return false;
             else
             {
-                var res = _departmentRepository.Remove(department);
-                return res > 0 ? true : false;
+                _unitOfWork.DepartmentRepository.Remove(department);
+return          _unitOfWork.SaveChanges() > 0 ? true : false;
             }
 
 

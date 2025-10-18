@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure;
 using MVCS3.BLL.DTOs.EmployeeDtos;
+using MVCS3.BLL.Services.AttachementService;
 using MVCS3.BLL.Services.Interfaces;
 using MVCS3.DAL.Models.EmployeeModel;
 using MVCS3.DAL.Models.Shared.Enums;
@@ -14,9 +15,11 @@ using System.Threading.Tasks;
 
 namespace MVCS3.BLL.Services.Classes
 {
-    public class EmployeeService(IEmployeeRepository _employeeRepository, IMapper _mapper) : IEmployeeService
+    public class EmployeeService(IUnitOfWork unitOfWork, IMapper _mapper,IAttachementService _attachementService) : IEmployeeService
     {
-        public IEnumerable<EmployeeDto> GetAllEmployees()
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName)
         {
 
             //var employeesDto = employees.Select(emp => new EmployeeDto()
@@ -31,7 +34,7 @@ namespace MVCS3.BLL.Services.Classes
             //    Salary = emp.Salary,
             //});
 
-            //var employees = _employeeRepository.GetAll(e => new EmployeeDto()
+            //var employees =  _unitOfWork.EmployeeRepository.GetAll(e => new EmployeeDto()
             //{
             //    Id=e.Id,
             //    Name=e.Name,
@@ -41,11 +44,16 @@ namespace MVCS3.BLL.Services.Classes
 
             //}).Where(e=>e.Age > 25);
             //return employees;
-            var employees = _employeeRepository.GetAll();
+            IEnumerable<Employee> employees;
+            if (string.IsNullOrWhiteSpace(EmployeeSearchName))
+                employees =  _unitOfWork.EmployeeRepository.GetAll();
+            else 
+                employees =  _unitOfWork.EmployeeRepository.GetAll(e => e.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+            
             return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
-
+            
             #region IEnumerable
-            //var result = _employeeRepository.GetIEnumerable()
+            //var result =  _unitOfWork.EmployeeRepository.GetIEnumerable()
             //                                .Where(e => e.IsDeleted == false)
             //                                .Select(e => new EmployeeDto()
             //                                {
@@ -57,7 +65,7 @@ namespace MVCS3.BLL.Services.Classes
             #endregion
 
             #region IQueryable
-            //var result = _employeeRepository.GetIQueryable()
+            //var result =  _unitOfWork.EmployeeRepository.GetIQueryable()
             //                                .Where(e => e.IsDeleted == false)
             //                                .Select(e => new EmployeeDto()
             //                                {
@@ -77,7 +85,7 @@ namespace MVCS3.BLL.Services.Classes
 
         public EmployeeDetailsDto? GetById(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee =  _unitOfWork.EmployeeRepository.GetById(id);
             //if (employee is null) return null;
             //var employeeDto = new EmployeeDetailsDto()
             //{
@@ -105,24 +113,33 @@ namespace MVCS3.BLL.Services.Classes
 
         public int AddEmployee(CreatedEmployeeDto employeeDto)
         {
-            var employee=_mapper.Map<Employee>(employeeDto);
-            return _employeeRepository.Add(employee);
+            var employee = _mapper.Map<Employee>(employeeDto);
+            
+            if(employeeDto.Image is not null)
+                employee.ImageName = _attachementService.Upload(employeeDto.Image, "Images");
+            
+            _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.SaveChanges();
+
+
         }
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee =  _unitOfWork.EmployeeRepository.GetById(id);
             if (employee is null) return false;
             else
             {
                 employee.IsDeleted = true;
-                return _employeeRepository.Update(employee) > 0 ? true : false;
+                _unitOfWork.EmployeeRepository.Update(employee);
+                return _unitOfWork.SaveChanges() > 0 ? true : false;
             }
         }
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
         {
             var employee=_mapper.Map<Employee>(employeeDto);
-            return _employeeRepository.Update(employee);
+             _unitOfWork.EmployeeRepository.Update(employee);
+            return _unitOfWork.SaveChanges();
         }
     }
 }

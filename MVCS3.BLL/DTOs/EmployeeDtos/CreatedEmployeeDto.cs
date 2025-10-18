@@ -1,4 +1,5 @@
-﻿using MVCS3.DAL.Models.EmployeeModel;
+﻿using Microsoft.AspNetCore.Http;
+using MVCS3.DAL.Models.EmployeeModel;
 using MVCS3.DAL.Models.Shared.Enums;
 using System;
 using System.Collections.Generic;
@@ -35,5 +36,6 @@ namespace MVCS3.BLL.DTOs.EmployeeDtos
         public EmployeeType EmployeeType { get; set; }
 
         public int? DepartmentId { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

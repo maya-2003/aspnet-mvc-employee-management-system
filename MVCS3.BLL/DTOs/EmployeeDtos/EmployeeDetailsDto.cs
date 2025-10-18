@@ -26,6 +26,8 @@ namespace MVCS3.BLL.DTOs.EmployeeDtos
 
         public string? Department { get; set; }
 
-        public int? DepartmentId { get; set; }  
+        public int? DepartmentId { get; set; }
+
+        public string? ImageName { get; set; }
     }
 }

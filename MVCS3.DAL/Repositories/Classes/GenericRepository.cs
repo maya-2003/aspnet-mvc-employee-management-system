@@ -6,6 +6,7 @@ using MVCS3.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,23 +41,30 @@ namespace MVCS3.DAL.Repositories.Classes
         //    else return _dbContext.Set<TEntity>().Where(entity => entity.IsDeleted == false).AsNoTracking().ToList();
         //}
         //Add TEntity
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
+           // return _dbContext.SaveChanges();
         }
         //Update TEntity
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
 
         //Delete TEntity
-        public int Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>()
+                .Where(predicate).ToList();
+                
         }
 
         //public IEnumerable<TEntity> GetIEnumerable()
@@ -69,6 +77,6 @@ namespace MVCS3.DAL.Repositories.Classes
         //    return _dbContext.Set<TEntity>();
         //}
 
-        
+
     }
 }

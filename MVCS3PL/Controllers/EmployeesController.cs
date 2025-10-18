@@ -15,9 +15,9 @@ namespace MVCS3PL.Controllers
 {
     public class EmployeesController(IEmployeeService _employeeService, [FromServices] IWebHostEnvironment _environment) : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName) //Model Binding
         {
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName); //Local Filter
             return View(employees);
         }
 
@@ -49,7 +49,8 @@ namespace MVCS3PL.Controllers
                         HiringDate = model.HiringDate,
                         IsActive = model.IsActive,
                         PhoneNumber = model.PhoneNumber,
-                        Salary = model.Salary
+                        Salary = model.Salary,
+                        Image=model.Image
 
                     };
                     int res = _employeeService.AddEmployee(dto);

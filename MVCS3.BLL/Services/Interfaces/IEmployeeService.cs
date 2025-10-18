@@ -12,7 +12,7 @@ namespace MVCS3.BLL.Services.Interfaces
     public interface IEmployeeService
     {
 
-        IEnumerable<EmployeeDto> GetAllEmployees();
+        IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName);
         EmployeeDetailsDto? GetById(int id);
         int AddEmployee(CreatedEmployeeDto employeeDto);
         bool DeleteEmployee(int id);
