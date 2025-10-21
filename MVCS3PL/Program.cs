@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using MVCS3.BLL.Services.AttachementService;
 using MVCS3.BLL.Services.Classes;
 using MVCS3.BLL.Services.Interfaces;
 using MVCS3.DAL.Data.Contexts;
+using MVCS3.DAL.Models.IdentityModels;
 using MVCS3.DAL.Repositories.Classes;
 using MVCS3.DAL.Repositories.Interfaces;
 
@@ -42,6 +44,13 @@ namespace MVCS3PL
 
             //builder.Services.AddAutoMapper(typeof(ProjectReference).Assembly);
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+				//options.User. RequireUnique Email = true;
+				//options.Password. RequireLowercase = true;
+				//options.Password. RequireUppercase = true
+			}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             #endregion
 
             var app = builder.Build();
@@ -62,9 +71,10 @@ namespace MVCS3PL
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+				//pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{controller=Account}/{action=Register}/{id?}");
 
-            app.Run();
+			app.Run();
         }
     }
 }
